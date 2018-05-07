@@ -1,15 +1,14 @@
 <template>
   <div>
     <v-app>
-      <navigation/>
-      <h1>hello world</h1>
+        <navigation />
+      contact us page..
     </v-app>
   </div>
 </template>
 
 <script>
-import navigation from './Front_end/navigation_header'
-
+import navigation from '../components/Front_end/navigation_header'
 export default {
   components: {
     navigation

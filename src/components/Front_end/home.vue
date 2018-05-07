@@ -177,6 +177,7 @@
           </v-layout>
         </v-footer>
       </v-content>
+
     </v-app>
   </div>
 </template>

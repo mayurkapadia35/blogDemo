@@ -1,22 +1,21 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import aboutus from '../components/about_us'
+import aboutus from '../components/about_us.vue'
 import home from '../components/Front_end/home'
+import contactus from '../components/contact_us'
 
-Vue.use(Router)
-
-export default new Router({
-  routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: home
-    },
-    {
-      path: '/about_us',
-      name: 'aboutus',
-      component: aboutus
-    }
-  ],
-  mode: 'history'
-})
+export const routes = [
+  {
+    path: '/',
+    component: home,
+    name: 'home'
+  },
+  {
+    path: '/about_us',
+    component: aboutus,
+    name: 'aboutus'
+  },
+  {
+    path: '/contact_us',
+    component: contactus,
+    name: 'contactus'
+  }
+]

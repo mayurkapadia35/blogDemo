@@ -1,12 +1,12 @@
 <template>
   <div class="text-xs-center">
-    <v-btn flat color="black" slot="activator" to="/" exact>
+    <v-btn flat color="black" slot="activator" :to="{name : 'home'}" exact>
       Home
     </v-btn>
-    <v-btn flat color="black" slot="activator" to="/about_us">
+    <v-btn flat color="black" slot="activator" :to="{name : 'aboutus'}">
       About Us
     </v-btn>
-    <v-btn flat color="black" slot="activator">
+    <v-btn flat color="black" slot="activator" :to="{name : 'contactus'}">
       Contact Us
     </v-btn>
 
@@ -24,7 +24,8 @@
                 <v-text-field
                   label="First name"
                   required
-                  hint="Please Enter the valid name">
+                  hint="Please Enter the valid name"
+                  v-model="user.firstname">
                 </v-text-field>
               </v-flex>
 
@@ -33,13 +34,15 @@
                   label="Last name"
                   hint="Please Enter the valid name"
                   required
+                  v-model="user.lastname"
                 ></v-text-field>
               </v-flex>
               <v-flex xs12>
                 <v-text-field
                   label="Email"
                   hint="Enter the Email"
-                  required>
+                  required
+                  v-model="user.useremail">
                 </v-text-field>
               </v-flex>
               <v-flex xs12>
@@ -53,7 +56,8 @@
                   value=""
                   class="input-group"
                   :type="e2 ? 'password' : 'text'"
-                  required></v-text-field>
+                  required
+                  v-model="user.userpassword"></v-text-field>
               </v-flex>
               <v-flex xs12>
                 <v-select
@@ -62,6 +66,7 @@
                   autocomplete
                   close chips
                   :items="['Skiing', 'Ice hockey', 'Soccer', 'Basketball', 'Hockey', 'Reading', 'Writing', 'Coding', 'Basejump']"
+                  v-model="user.interest"
                 ></v-select>
               </v-flex>
             </v-layout>
@@ -71,7 +76,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="black" flat="flat" @click.native="dialog = false">Close</v-btn>
-          <v-btn color="black" flat="flat" @click.native="dialog = false">Register</v-btn>
+          <v-btn color="black" flat="flat" @click.native="snackbar = true" @click='registerUser({"first_name": user.firstname,"last_name": user.lastname,"email": user.useremail, "password": user.userpassword, "interest": user.interest})'>Register</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>             <!--Sign Up-->
@@ -118,22 +123,51 @@
         </v-card-actions>
       </v-card>
     </v-dialog>           <!--Login Code-->
-
+    <!---->
+    <v-card>
+      <v-snackbar
+        :timeout=10000
+        :bottom="y==='bottom'"
+        :multi-line="mode === 'multi-line'"
+        :vertical="mode==='vertical'"
+        v-model="snackbar"
+      >
+        {{ this.text }}
+        <v-btn flat color="pink" @click.native="snackbar = false">Close</v-btn>
+      </v-snackbar>
+    </v-card>
   </div>
 </template>
 
 <script>
-
+import { mapActions } from 'vuex'
 export default {
   data: () => ({
     dialog: false,
     logindialog: false,
     e2: true,
-    e3: true
-  })
+    e3: true,
+    user: [{
+      firstname: '',
+      lastname: '',
+      useremail: '',
+      userpassword: '',
+      interest: []
+    }],
+    snackbar: false,
+    y: 'bottom',
+    x: null,
+    mode: 'vertical',
+    timeout: 3000,
+    text: 'Registration Successfully'
+  }),
+  methods: {
+    ...mapActions([
+      'registerUser'
+    ])
+  }
 }
 </script>
 
 <style scoped>
-
 </style>

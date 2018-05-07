@@ -1,16 +1,14 @@
-
 <template>
-  <div id="app">
-    <home />
+  <div>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-
-import home from './components/Front_end/home'
+import navigation from './components/Front_end/navigation_header'
 export default {
   components: {
-    home
+    navigation
   }
 }
 </script>
