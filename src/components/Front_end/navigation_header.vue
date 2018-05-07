@@ -94,6 +94,7 @@
               <v-flex xs12>
                 <v-text-field
                   label="Email"
+                  v-model="loginDetails.useremail"
                   required>
                 </v-text-field>
               </v-flex>
@@ -109,7 +110,8 @@
                   value=""
                   class="input-group"
                   :type="e3 ? 'password' : 'text'"
-                  required></v-text-field>
+                  required
+                  v-model="loginDetails.userpassword"></v-text-field>
               </v-flex>
 
             </v-layout>
@@ -119,7 +121,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="black" flat="flat" @click.native="logindialog = false">Close</v-btn>
-          <v-btn color="black" flat="flat" @click.native="logindialog = false">Log In</v-btn>
+          <v-btn color="black" flat="flat" @click='loginProcess({"email": loginDetails.useremail,"password": loginDetails.userpassword})'>Log In</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>           <!--Login Code-->
@@ -135,7 +137,7 @@
         {{ this.text }}
         <v-btn flat color="pink" @click.native="snackbar = false">Close</v-btn>
       </v-snackbar>
-    </v-card>
+    </v-card>                                       <!--Snackbar Code for userFriendly layout-->
   </div>
 </template>
 
@@ -147,6 +149,10 @@ export default {
     logindialog: false,
     e2: true,
     e3: true,
+    loginDetails: [{
+      email: '',
+      password: ''
+    }],
     user: [{
       firstname: '',
       lastname: '',
@@ -163,7 +169,8 @@ export default {
   }),
   methods: {
     ...mapActions([
-      'registerUser'
+      'registerUser',
+      'loginProcess'
     ])
   }
 }

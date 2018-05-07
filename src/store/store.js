@@ -6,7 +6,8 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
   state: {
-    count: 0
+    count: 0,
+    url: 'http://localhost:9090/vuecliapi/insert.php'
   },
   getters: {
 
@@ -19,7 +20,20 @@ export const store = new Vuex.Store({
       fd.append('email', payload.email)
       fd.append('password', payload.password)
       fd.append('interest', payload.interest)
-      axios.post('http://localhost:9090/vuecliapi/insert.php', fd)
+
+      axios.post(this.url, fd)
+        .then(res => console.log(res))
+        .catch(e => {
+          console.log(e)
+        })
+    },
+    loginProcess: (state, payload) => {
+
+      var fd = new FormData()
+      fd.append('email', payload.email)
+      fd.append('password', payload.password)
+
+      axios.post('http://localhost:9090/vuecliapi/insert.php?type=login', fd)
         .then(res => console.log(res))
         .catch(e => {
           console.log(e)
@@ -29,6 +43,9 @@ export const store = new Vuex.Store({
   actions: {
     registerUser: ({commit}, payload) => {
       commit('registerUser', payload)
+    },
+    loginProcess: ({commit}, payload) => {
+      commit('loginProcess', payload)
     }
   }
 })
