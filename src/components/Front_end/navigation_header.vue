@@ -10,8 +10,17 @@
       Contact Us
     </v-btn>
 
+    <v-btn flat v-if='isLogin' color="black" slot="activator">
+      Blogs
+    </v-btn>
+    <v-btn flat color="black" v-if='isLogin' slot="activator">
+      Your Blog/s
+    </v-btn>
+    <v-btn flat v-if='isLogin' color="black" slot="activator" @click='logoutProcess()'>
+      Log Out
+    </v-btn>
     <v-dialog v-model="dialog" persistent max-width="500px">
-      <v-btn flat color="black" slot="activator">Sign Up</v-btn>
+      <v-btn v-if='!isLogin' flat color="black" slot="activator">Sign Up</v-btn>
       <v-card>
         <v-card-title>
           <span class="headline">User Profile</span>
@@ -82,7 +91,7 @@
     </v-dialog>             <!--Sign Up-->
 
     <v-dialog v-model="logindialog" persistent max-width="500px">
-      <v-btn flat color="black" slot="activator">Log in</v-btn>
+      <v-btn  v-if='!isLogin' flat color="black" slot="activator">Log in</v-btn>
       <v-card>
         <v-card-title>
           <span class="headline">Login Details</span>
@@ -142,7 +151,8 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import {mapActions} from 'vuex'
+
 export default {
   data: () => ({
     dialog: false,
@@ -170,11 +180,16 @@ export default {
   methods: {
     ...mapActions([
       'registerUser',
-      'loginProcess'
+      'loginProcess',
+      'logoutProcess'
     ])
+  },
+  computed: {
+    isLogin () {
+      return this.$store.getters.get_isLogin
+    }
   }
 }
 </script>
-
 <style scoped>
 </style>

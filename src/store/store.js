@@ -7,10 +7,13 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
   state: {
     count: 0,
-    url: 'http://localhost:9090/vuecliapi/insert.php'
+    url: 'http://localhost:9090/vuecliapi/insert.php',
+    isLogin: false
   },
   getters: {
-
+    get_isLogin: state => {
+      return state.isLogin
+    }
   },
   mutations: {
     registerUser: (state, payload) => {
@@ -28,16 +31,27 @@ export const store = new Vuex.Store({
         })
     },
     loginProcess: (state, payload) => {
-
       var fd = new FormData()
       fd.append('email', payload.email)
       fd.append('password', payload.password)
-
       axios.post('http://localhost:9090/vuecliapi/insert.php?type=login', fd)
-        .then(res => console.log(res))
+        .then((res) => {
+          console.log(res.data)
+          if (!localStorage.getItem('jwttoken')) {
+            localStorage.setItem('jwttoken', res.data[0].jwt)
+            localStorage.setItem('user_id', res.data[0].user_id)
+            state.isLogin = true
+          }
+        })
         .catch(e => {
           console.log(e)
         })
+    },
+    logoutProcess: (state) => {
+      localStorage.removeItem('user_id')
+      localStorage.removeItem('jwttoken')
+      state.isLogin = false
+      this.$router.push('/')
     }
   },
   actions: {
@@ -46,6 +60,9 @@ export const store = new Vuex.Store({
     },
     loginProcess: ({commit}, payload) => {
       commit('loginProcess', payload)
+    },
+    logoutProcess: ({commit}) => {
+      commit('logoutProcess')
     }
   }
 })
