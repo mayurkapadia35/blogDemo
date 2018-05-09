@@ -1,26 +1,33 @@
 <template>
   <div class="text-xs-center">
     <v-btn flat color="black" slot="activator" :to="{name : 'home'}" exact>
+      <v-icon>home</v-icon>
       Home
     </v-btn>
     <v-btn flat color="black" slot="activator" :to="{name : 'aboutus'}">
+      <v-icon>account-multiple</v-icon>
       About Us
     </v-btn>
     <v-btn flat color="black" slot="activator" :to="{name : 'contactus'}">
+      <v-icon>email</v-icon>
       Contact Us
     </v-btn>
 
-    <v-btn flat v-if='isLogin' color="black" slot="activator">
+    <v-btn flat v-if='isLogin' color="black" slot="activator" :to="{name : 'blogs'}">
       Blogs
     </v-btn>
-    <v-btn flat color="black" v-if='isLogin' slot="activator">
+    <v-btn flat color="black" v-if='isLogin' slot="activator" :to="{name : 'yourblogs'}">
       Your Blog/s
     </v-btn>
     <v-btn flat v-if='isLogin' color="black" slot="activator" @click='logoutProcess()'>
       Log Out
     </v-btn>
+
     <v-dialog v-model="dialog" persistent max-width="500px">
-      <v-btn v-if='!isLogin' flat color="black" slot="activator">Sign Up</v-btn>
+      <v-btn v-if='!isLogin' flat color="black" slot="activator">
+        <v-icon>face</v-icon>
+        Sign Up
+      </v-btn>
       <v-card>
         <v-card-title>
           <span class="headline">User Profile</span>
@@ -84,14 +91,29 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="black" flat="flat" @click.native="dialog = false">Close</v-btn>
-          <v-btn color="black" flat="flat" @click.native="snackbar = true" @click='registerUser({"first_name": user.firstname,"last_name": user.lastname,"email": user.useremail, "password": user.userpassword, "interest": user.interest})'>Register</v-btn>
+
+          <v-btn dark @click.native="dialog = false">
+            <v-icon dark left>remove_circle</v-icon>Cancel
+          </v-btn>
+
+          <v-btn @click.native="snackbar = true, loader = 'loading4'" @click='registerUser({"first_name": user.firstname,"last_name": user.lastname,"email": user.useremail, "password": user.userpassword, "interest": user.interest})'
+          :loading="loading4" :disabled="loading4" color="info">Register
+
+            <span slot="loader" class="custom-loader">
+              <v-icon light>cached</v-icon>
+            </span>
+          </v-btn>
+
         </v-card-actions>
       </v-card>
     </v-dialog>             <!--Sign Up-->
 
     <v-dialog v-model="logindialog" persistent max-width="500px">
-      <v-btn  v-if='!isLogin' flat color="black" slot="activator">Log in</v-btn>
+      <v-btn  v-if='!isLogin' flat color="black" slot="activator">
+        <v-icon>lock_open</v-icon>
+        <v-spacer></v-spacer>
+        Log in
+      </v-btn>
       <v-card>
         <v-card-title>
           <span class="headline">Login Details</span>
@@ -130,14 +152,14 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="black" flat="flat" @click.native="logindialog = false">Close</v-btn>
-          <v-btn color="black" flat="flat" @click='loginProcess({"email": loginDetails.useremail,"password": loginDetails.userpassword})'>Log In</v-btn>
+          <v-btn color="black" flat="flat" @click.native="logindialog = false" @click='loginProcess({"email": loginDetails.useremail,"password": loginDetails.userpassword})'>Log In</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>           <!--Login Code-->
     <!---->
     <v-card>
       <v-snackbar
-        :timeout=10000
+        :timeout=3000
         :bottom="y==='bottom'"
         :multi-line="mode === 'multi-line'"
         :vertical="mode==='vertical'"
@@ -159,6 +181,8 @@ export default {
     logindialog: false,
     e2: true,
     e3: true,
+    loader: null,
+    loading4: false,
     loginDetails: [{
       email: '',
       password: ''
@@ -188,8 +212,54 @@ export default {
     isLogin () {
       return this.$store.getters.get_isLogin
     }
+  },
+  watch: {
+    loader () {
+      const l = this.loader
+      this[l] = !this[l]
+
+      setTimeout( () => (this[l] = false, this.dialog = false), 2000)
+
+      this.loader = null
+    }
   }
 }
 </script>
 <style scoped>
+  .custom-loader {
+    animation: loader 1s infinite;
+    display: flex;
+  }
+  @-moz-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @-webkit-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @-o-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
 </style>

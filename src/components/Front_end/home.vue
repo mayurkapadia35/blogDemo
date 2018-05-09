@@ -2,7 +2,6 @@
   <div>
     <v-app light>
       <navigation />      <!--This is a navigation link.-->
-
       <!--rest of the things like content-->
       <v-content>
         <section>

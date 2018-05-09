@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import base64url from 'base64url'
 
 Vue.use(Vuex)
 
@@ -8,11 +9,21 @@ export const store = new Vuex.Store({
   state: {
     count: 0,
     url: 'http://localhost:9090/vuecliapi/insert.php',
-    isLogin: false
+    isLogin: false,
+    user_id: ''
   },
   getters: {
     get_isLogin: state => {
-      return state.isLogin
+      if (localStorage.getItem('jwttoken')) {
+        state.isLogin = true
+        return state.isLogin
+      } else {
+        state.isLogin = false
+        return state.isLogin
+      }
+    },
+    get_userId: state => {
+      return state.user_id
     }
   },
   mutations: {
@@ -24,7 +35,7 @@ export const store = new Vuex.Store({
       fd.append('password', payload.password)
       fd.append('interest', payload.interest)
 
-      axios.post(this.url, fd)
+      axios.post(state.url, fd)
         .then(res => console.log(res))
         .catch(e => {
           console.log(e)
@@ -36,10 +47,11 @@ export const store = new Vuex.Store({
       fd.append('password', payload.password)
       axios.post('http://localhost:9090/vuecliapi/insert.php?type=login', fd)
         .then((res) => {
-          console.log(res.data)
           if (!localStorage.getItem('jwttoken')) {
             localStorage.setItem('jwttoken', res.data[0].jwt)
-            localStorage.setItem('user_id', res.data[0].user_id)
+            let userid = res.data[0].jwt.split('.')
+            let id = JSON.parse(base64url.decode(userid[1]))
+            state.user_id = id.user_id
             state.isLogin = true
           }
         })
@@ -48,7 +60,6 @@ export const store = new Vuex.Store({
         })
     },
     logoutProcess: (state) => {
-      localStorage.removeItem('user_id')
       localStorage.removeItem('jwttoken')
       state.isLogin = false
       this.$router.push('/')
