@@ -35,7 +35,6 @@
         <v-card-text>
           <v-container grid-list-md>
             <v-layout wrap>
-
               <v-flex xs12 sm6 md6>
                 <v-text-field
                   label="First name"
@@ -80,7 +79,6 @@
                   label="Interests"
                   multiple
                   autocomplete
-                  close chips
                   :items="['Skiing', 'Ice hockey', 'Soccer', 'Basketball', 'Hockey', 'Reading', 'Writing', 'Coding', 'Basejump']"
                   v-model="user.interest"
                 ></v-select>
@@ -92,11 +90,11 @@
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn dark @click.native="dialog = false">
+          <v-btn dark @click.native="dialog = false" @click="reset">
             <v-icon dark left>remove_circle</v-icon>Cancel
           </v-btn>
 
-          <v-btn @click.native="snackbar = true, loader = 'loading4'" @click='registerUser({"first_name": user.firstname,"last_name": user.lastname,"email": user.useremail, "password": user.userpassword, "interest": user.interest})'
+          <v-btn @click.native="snackbar = false, loader = 'loading4'" @click='registerUser({"first_name": user.firstname,"last_name": user.lastname,"email": user.useremail, "password": user.userpassword, "interest": user.interest})'
           :loading="loading4" :disabled="loading4" color="info">Register
 
             <span slot="loader" class="custom-loader">
@@ -206,7 +204,14 @@ export default {
       'registerUser',
       'loginProcess',
       'logoutProcess'
-    ])
+    ]),
+    reset () {
+      this.user.firstname = ''
+      this.user.lastname = ''
+      this.user.useremail = ''
+      this.user.userpassword = ''
+      this.user.interest = []
+    }
   },
   computed: {
     isLogin () {
@@ -218,7 +223,7 @@ export default {
       const l = this.loader
       this[l] = !this[l]
 
-      setTimeout( () => (this[l] = false, this.dialog = false), 2000)
+      setTimeout(() => (this[l] = false, this.dialog = false, this.snackbar = true), 2000)
 
       this.loader = null
     }
