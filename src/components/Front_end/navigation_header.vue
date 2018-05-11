@@ -222,9 +222,7 @@ export default {
     loader () {
       const l = this.loader
       this[l] = !this[l]
-
       setTimeout(() => (this[l] = false, this.dialog = false, this.snackbar = true), 2000)
-
       this.loader = null
     }
   }

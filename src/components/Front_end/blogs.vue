@@ -25,14 +25,27 @@
             <v-stepper-step step="3">Add Description</v-stepper-step>
           </v-stepper-header>
 
-
-
           <v-stepper-items>
             <v-stepper-content step="1">
               <v-card color="grey lighten-1" class="mb-5" height="200px">
+                <v-layout row>
+                  <v-flex xs12 sm6 offset-sm3>
+                    <v-btn raised class="secondary" @click="onPickFile">Upload Image</v-btn>
+                    <input
+                      type="file"
+                      multiple
+                      style="display: none"
+                      ref="fileInput"
+                      accept="image/*"
+                      @change="onFilePicked">
+                  </v-flex>
+                </v-layout>
 
-                <v-text-field type="file" onchange="previewimage" />
-                <img src="" alt="" height="50"/>
+                <v-layout>
+                  <v-flex xs12 sm6 offset-sm3>
+                    <img :src="imageurl" height="150">
+                  </v-flex>
+                </v-layout>
 
               </v-card>
               <v-btn color="primary" @click.native="e1 = 2">Continue</v-btn>
@@ -40,25 +53,30 @@
             </v-stepper-content>
             <v-stepper-content step="2">
               <v-card color="grey lighten-1" class="mb-5" height="200px">
-
-                <v-text-field autofocus="true" placeholder="Enter the Title of blog" hint="Enter the valid title related to blog">
-
-                </v-text-field>
-
-
+                <v-layout row>
+                  <v-flex xs12 sm6 offset-sm3>
+                    <v-text-field label="Title" v-model="title" hint="Enter the valid title related to blog"></v-text-field>
+                  </v-flex>
+                </v-layout>
               </v-card>
               <v-btn color="primary" @click.native="e1 = 3">Continue</v-btn>
               <v-btn flat @click.native="dialog=false">Cancel</v-btn>
             </v-stepper-content>
             <v-stepper-content step="3">
               <v-card color="grey lighten-1" class="mb-5" height="200px">
-                <v-text-field
-                  name="input-7-1"
-                  label="Label Text"
-                  multi-line
-                ></v-text-field>
+                <v-layout row>
+                  <v-flex xs12 sm6 offset-sm3>
+                    <v-text-field
+                      name="description"
+                      label="Description"
+                      multi-line
+                      v-model="description"
+                    ></v-text-field>
+                  </v-flex>
+                </v-layout>
+
               </v-card>
-              <v-btn color="primary" @click.native="e1 = 1, dialog=false">Finish</v-btn>
+              <v-btn color="primary" @click.native="e1 = 1, dialog=false" @click="addBlog" :disabled="!formIsValid">Finish</v-btn>
               <v-btn flat @click.native="dialog=false">Cancel</v-btn>
             </v-stepper-content>
           </v-stepper-items>
@@ -77,28 +95,52 @@ export default {
   data () {
     return {
       dialog: false,
-      e1: 0
+      e1: 0,
+      imageurl: '',
+      title: '',
+      description: '',
+      image: null,
+    }
+  },
+  computed: {
+    formIsValid () {
+      return this.imageurl !== '' &&
+        this.title !== '' &&
+        this.description !== ''
+    }
+  },
+  methods: {
+    onPickFile () {
+      this.$refs.fileInput.click()
+    },
+    onFilePicked (event) {
+      const files = event.target.files
+      let filename = files[0].name
+      if (filename.lastIndexOf('.') <= 0) {
+        return alert('please add a valid file')
+      }
+      const fileReader = new FileReader()
+      fileReader.addEventListener('load', () => {
+        this.imageurl = fileReader.result
+      })
+      fileReader.readAsDataURL(files[0])
+      this.image = files[0]
+    },
+
+    addBlog () {
+      const addblog = {
+        title: this.title,
+        image: this.image,
+        description: this.description
+      }
+      console.log(addblog)
+      this.$store.dispatch('insertBlog', addblog)
     }
   },
   components: {
     navigation
   }
 }
-function  previewimage () {
-  // var preview  = document.querySelector('img');
-  // var file     = document.querySelector('input[type=file]').files[0];
-  // var reader   = new FileReader();
-  //
-  // reader.addEventListener('load',function () {
-  //   preview.src = reader.result;
-  // },false);
-  //
-  // if (file) {
-  //   reader.readAsDataURL(file);
-  // }
-   alert('kjhfbsbhfd')
-}
-
 </script>
 
 <style scoped>

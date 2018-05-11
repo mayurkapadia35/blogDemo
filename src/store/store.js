@@ -10,7 +10,9 @@ export const store = new Vuex.Store({
     count: 0,
     url: 'http://localhost:9090/vuecliapi/insert.php',
     isLogin: false,
-    user_id: ''
+    user_id: '',
+    user_token: ''
+
   },
   getters: {
     get_isLogin: state => {
@@ -24,6 +26,9 @@ export const store = new Vuex.Store({
     },
     get_userId: state => {
       return state.user_id
+    },
+    get_userToken: state => {
+      return state.user_token
     }
   },
   mutations: {
@@ -50,9 +55,12 @@ export const store = new Vuex.Store({
           if (!localStorage.getItem('jwttoken')) {
             localStorage.setItem('jwttoken', res.data[0].jwt)
             let userid = res.data[0].jwt.split('.')
+
             let id = JSON.parse(base64url.decode(userid[1]))
             state.user_id = id.user_id
             state.isLogin = true
+            state.user_token = res.data[0].jwt
+            console.log(state.user_id)
           }
         })
         .catch(e => {
@@ -63,6 +71,23 @@ export const store = new Vuex.Store({
       localStorage.removeItem('jwttoken')
       state.isLogin = false
       this.$router.push('/')
+    },
+    insertBlog: (state, payload) => {
+      let fd = new FormData()
+      fd.append('title', payload. title)
+      fd.append('image', payload.image)
+      fd.append('description', payload.description)
+      fd.append('userid', state.user_id)
+
+      axios.post(state.url, fd, {
+        headers: {
+          'Authorization': state.user_token
+        }
+      })
+        .then(res => console.log(res))
+        .catch(e => {
+          console.log(e)
+        })
     }
   },
   actions: {
@@ -74,6 +99,10 @@ export const store = new Vuex.Store({
     },
     logoutProcess: ({commit}) => {
       commit('logoutProcess')
+    },
+    insertBlog: ({commit}, payload) => {
+      commit('insertBlog', payload)
     }
-  }
+  },
+
 })
