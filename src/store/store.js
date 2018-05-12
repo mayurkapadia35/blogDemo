@@ -11,8 +11,9 @@ export const store = new Vuex.Store({
     url: 'http://localhost:9090/vuecliapi/insert.php',
     isLogin: false,
     user_id: '',
-    user_token: ''
-
+    user_token: '',
+    isallblog: false,
+    allBlog: []
   },
   getters: {
     get_isLogin: state => {
@@ -29,6 +30,12 @@ export const store = new Vuex.Store({
     },
     get_userToken: state => {
       return state.user_token
+    },
+    get_isallblog: state => {
+      return state.isallblog
+    },
+    get_allBlog: state => {
+      return state.allBlog
     }
   },
   mutations: {
@@ -60,7 +67,6 @@ export const store = new Vuex.Store({
             state.user_id = id.user_id
             state.isLogin = true
             state.user_token = res.data[0].jwt
-            console.log(state.user_id)
           }
         })
         .catch(e => {
@@ -74,7 +80,7 @@ export const store = new Vuex.Store({
     },
     insertBlog: (state, payload) => {
       let fd = new FormData()
-      fd.append('title', payload. title)
+      fd.append('title', payload.title)
       fd.append('image', payload.image)
       fd.append('description', payload.description)
       fd.append('userid', state.user_id)
@@ -85,6 +91,26 @@ export const store = new Vuex.Store({
         }
       })
         .then(res => console.log(res))
+        .catch(e => {
+          console.log(e)
+        })
+    },
+    getAllBlog: (state) => {
+      axios.get(state.url, {headers: {'Authorization': state.user_token}})
+        .then((res) => {
+
+          for(let key in res.data){
+            state.allBlog.push({
+              'id': res.data[key].blog_id,
+              'title': res.data[key].blog_title,
+              'description': res.data[key].blog_description,
+              'image': res.data[key].blog_image,
+              'userid': res.data[key].user_id
+            })
+          }
+          state.isallblog = true
+          // console.log(state.allBlog)
+        })
         .catch(e => {
           console.log(e)
         })
@@ -102,7 +128,10 @@ export const store = new Vuex.Store({
     },
     insertBlog: ({commit}, payload) => {
       commit('insertBlog', payload)
+    },
+    getAllBlog: ({commit}) => {
+      commit('getAllBlog')
     }
-  },
+  }
 
 })

@@ -5,7 +5,7 @@
       <!--rest of the things like content-->
       <v-content>
         <section>
-          <v-parallax src="static/images/Blogging-Services-670x335.jpg" height="600">
+          <v-parallax src="static/images/blogging-SMB.png" height="600">
             <v-layout
               column
               align-center

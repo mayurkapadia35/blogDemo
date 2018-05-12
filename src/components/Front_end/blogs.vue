@@ -12,6 +12,26 @@
             </v-card>
           </v-flex>
         </v-layout>
+
+        <v-layout row>
+          <v-flex xs12 sm6 offset-sm3>
+            <v-card>
+              <v-card-media src="" height="200px">
+              </v-card-media>
+              <v-card-title primary-title>
+                <div>
+                  <h3 class="headline mb-0">sjkdvbksjfdk</h3>
+                  <div>;lodrg;dfgmdf</div>
+                </div>
+              </v-card-title>
+              <v-card-actions>
+                <v-btn flat color="orange">Share</v-btn>
+                <v-btn flat color="orange">Explore</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-flex>
+        </v-layout>
+
       </v-container>
       <v-form>
       <v-dialog v-model="dialog" max-width="500px">
@@ -76,14 +96,27 @@
                 </v-layout>
 
               </v-card>
-              <v-btn color="primary" @click.native="e1 = 1, dialog=false" @click="addBlog" :disabled="!formIsValid">Finish</v-btn>
+              <v-btn color="primary" @click.native="snackbar = true, e1 = 1, dialog=false" @click="addBlog" :disabled="!formIsValid">Finish</v-btn>
               <v-btn flat @click.native="dialog=false">Cancel</v-btn>
             </v-stepper-content>
           </v-stepper-items>
 
         </v-stepper>
       </v-dialog>
+        <v-card>
+          <v-snackbar
+            :timeout=2000
+            :bottom="y==='bottom'"
+            :multi-line="mode === 'multi-line'"
+            :vertical="mode==='vertical'"
+            v-model="snackbar"
+          >
+            {{ this.text }}
+            <v-btn flat color="pink" @click.native="snackbar = false">Close</v-btn>
+          </v-snackbar>
+        </v-card>
       </v-form>
+
     </v-app>
   </div>
 </template>
@@ -100,6 +133,13 @@ export default {
       title: '',
       description: '',
       image: null,
+
+      snackbar: false,
+      y: 'bottom',
+      x: null,
+      mode: 'vertical',
+      text: 'Blog Posted Successfully',
+      allblog: []
     }
   },
   computed: {
@@ -126,7 +166,6 @@ export default {
       fileReader.readAsDataURL(files[0])
       this.image = files[0]
     },
-
     addBlog () {
       const addblog = {
         title: this.title,
@@ -139,6 +178,17 @@ export default {
   },
   components: {
     navigation
+  },
+  created () {
+    console.log("blogs.vue com[ponent")
+    if (this.$store.getters.get_isallblog) {
+      //debugger
+      this.allblog = this.$store.getters.get_allBlog
+      console.log('inside if ')
+    } else {
+      console.log('outside if ')
+      this.$store.dispatch('getAllBlog')
+    }
   }
 }
 </script>
