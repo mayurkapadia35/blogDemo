@@ -98,18 +98,22 @@ export const store = new Vuex.Store({
     getAllBlog: (state) => {
       axios.get(state.url, {headers: {'Authorization': state.user_token}})
         .then((res) => {
+          // console.log(res)
+          // state.allBlog = state.allBlog.concat(res.data)
 
           for(let key in res.data){
+
             state.allBlog.push({
-              'id': res.data[key].blog_id,
-              'title': res.data[key].blog_title,
-              'description': res.data[key].blog_description,
-              'image': res.data[key].blog_image,
-              'userid': res.data[key].user_id
+              id: res.data[key].blog_id,
+              title: res.data[key].blog_title,
+              description: res.data[key].blog_description,
+              image: res.data[key].blog_image,
+              userid: res.data[key].user_id
             })
           }
           state.isallblog = true
-          // console.log(state.allBlog)
+
+          // console.log(state.allBlog[0])
         })
         .catch(e => {
           console.log(e)

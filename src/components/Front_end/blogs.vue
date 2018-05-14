@@ -182,12 +182,18 @@ export default {
   created () {
     console.log("blogs.vue com[ponent")
     if (this.$store.getters.get_isallblog) {
-      //debugger
+
+      // this.allblog = []
       this.allblog = this.$store.getters.get_allBlog
-      console.log('inside if ')
-    } else {
-      console.log('outside if ')
+      // console.log(this.allblog)
+
+      } else {
+
+      this.allblog = []
       this.$store.dispatch('getAllBlog')
+      this.allblog = this.$store.getters.get_allBlog
+      // this.allblog.splice(0,1)
+      console.log(this.allblog.__ob__.value.observeArray())
     }
   }
 }
