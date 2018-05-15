@@ -6,7 +6,6 @@ import Vueroute from 'vue-router'
 import {routes} from './router/index'
 import { store } from './store/store'
 import base64url from 'base64url/dist/base64url'
-import axios from 'axios'
 
 Vue.config.productionTip = false
 Vue.use(Vuetify)
@@ -28,6 +27,7 @@ new Vue({
       let userid = token.split('.')
       let id = JSON.parse(base64url.decode(userid[1]))
       this.$store.state.user_id = id.user_id
+      this.$store.dispatch('getAllBlog')
     }
   },
   components: { App },

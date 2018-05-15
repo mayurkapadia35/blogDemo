@@ -67,6 +67,7 @@ export const store = new Vuex.Store({
             state.user_id = id.user_id
             state.isLogin = true
             state.user_token = res.data[0].jwt
+            state.isallblog = true
           }
         })
         .catch(e => {
@@ -84,6 +85,18 @@ export const store = new Vuex.Store({
       fd.append('image', payload.image)
       fd.append('description', payload.description)
       fd.append('userid', state.user_id)
+      console.log(payload)
+      let temparray = state.allBlog[state.allBlog.length - 1]
+      let temp_id= parseInt(temparray.blog_id) + 1
+
+      state.allBlog.push({
+        'blog_id' : temp_id,
+        'blog_title' : payload.title,
+        'blog_description' : payload.description,
+        'blog_image' : payload.image.name,
+        'user_id' : state.user_id,
+        'flag' : true
+      })
 
       axios.post(state.url, fd, {
         headers: {
@@ -100,17 +113,18 @@ export const store = new Vuex.Store({
         .then((res) => {
           // console.log(res)
           // state.allBlog = state.allBlog.concat(res.data)
-
-          for(let key in res.data){
-
-            state.allBlog.push({
-              id: res.data[key].blog_id,
-              title: res.data[key].blog_title,
-              description: res.data[key].blog_description,
-              image: res.data[key].blog_image,
-              userid: res.data[key].user_id
-            })
-          }
+          state.allBlog = []
+          state.allBlog = state.allBlog.concat(res.data)
+          // for(let key in res.data){
+          //
+          //   state.allBlog.push({
+          //     id: res.data[key].blog_id,
+          //     title: res.data[key].blog_title,
+          //     description: res.data[key].blog_description,
+          //     image: res.data[key].blog_image,
+          //     userid: res.data[key].user_id
+          //   })
+          // }
           state.isallblog = true
 
           // console.log(state.allBlog[0])

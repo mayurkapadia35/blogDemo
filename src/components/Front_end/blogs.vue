@@ -13,25 +13,31 @@
           </v-flex>
         </v-layout>
 
-        <v-layout row>
+        <v-layout row wrap>
           <v-flex xs12 sm6 offset-sm3>
-            <v-card>
-              <v-card-media src="" height="200px">
+            <v-card raised light v-for="item in getallblog" :key="item.blog_id">
+              <v-card-media :src="/static/+item.blog_image" height="200px">
               </v-card-media>
               <v-card-title primary-title>
                 <div>
-                  <h3 class="headline mb-0">sjkdvbksjfdk</h3>
-                  <div>;lodrg;dfgmdf</div>
+                  <h3 class="headline mb- 0">{{item.blog_title}}</h3>
+                  <div>{{item.blog_description}}</div>
                 </div>
               </v-card-title>
-              <v-card-actions>
-                <v-btn flat color="orange">Share</v-btn>
-                <v-btn flat color="orange">Explore</v-btn>
-              </v-card-actions>
+              <!--<v-card-actions right>-->
+                <!--<v-btn fab small color="orange" >-->
+                <!--<v-icon>edit</v-icon></v-btn>-->
+                <!--<v-btn flat color="orange">Explore</v-btn>-->
+              <!--</v-card-actions>-->
             </v-card>
+            <hr>
           </v-flex>
         </v-layout>
-
+        <!--<div v-for="(item, index) in getallblog">-->
+          <!--<ul>-->
+            <!--<li :key="index">{{item}}</li>-->
+          <!--</ul>-->
+        <!--</div>-->
       </v-container>
       <v-form>
       <v-dialog v-model="dialog" max-width="500px">
@@ -107,6 +113,7 @@
           <v-snackbar
             :timeout=2000
             :bottom="y==='bottom'"
+            :right="x === 'right'"
             :multi-line="mode === 'multi-line'"
             :vertical="mode==='vertical'"
             v-model="snackbar"
@@ -136,10 +143,10 @@ export default {
 
       snackbar: false,
       y: 'bottom',
-      x: null,
-      mode: 'vertical',
+      x: 'right',
+      mode: 'multi-line',
       text: 'Blog Posted Successfully',
-      allblog: []
+      allblog: {}
     }
   },
   computed: {
@@ -147,7 +154,13 @@ export default {
       return this.imageurl !== '' &&
         this.title !== '' &&
         this.description !== ''
+    },
+    getallblog () {
+      console.log(this.$store.getters.get_allBlog)
+      return this.$store.getters.get_allBlog
+      // this.allblog = this.$store.getters.get_allBlog
     }
+
   },
   methods: {
     onPickFile () {
@@ -175,25 +188,15 @@ export default {
       console.log(addblog)
       this.$store.dispatch('insertBlog', addblog)
     }
+
   },
   components: {
     navigation
   },
   created () {
-    console.log("blogs.vue com[ponent")
     if (this.$store.getters.get_isallblog) {
-
-      // this.allblog = []
-      this.allblog = this.$store.getters.get_allBlog
-      // console.log(this.allblog)
-
-      } else {
-
-      this.allblog = []
       this.$store.dispatch('getAllBlog')
-      this.allblog = this.$store.getters.get_allBlog
-      // this.allblog.splice(0,1)
-      console.log(this.allblog.__ob__.value.observeArray())
+      this.$store.state.isallblog = false
     }
   }
 }
