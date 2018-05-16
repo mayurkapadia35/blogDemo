@@ -14,9 +14,9 @@
         </v-layout>
 
         <v-layout row wrap>
-          <v-flex xs12 sm6 offset-sm3>
-            <v-card raised light v-for="item in getallblog" :key="item.blog_id">
-              <v-card-media :src="/static/+item.blog_image" height="200px">
+          <v-flex xs12 sm6 offset-sm3 v-for="item in getallblog" :key="item.blog_id">
+            <v-card raised>
+              <v-card-media :src="/static/+item.blog_image" height="200px" >
               </v-card-media>
               <v-card-title primary-title>
                 <div>
@@ -24,22 +24,12 @@
                   <div>{{item.blog_description}}</div>
                 </div>
               </v-card-title>
-              <!--<v-card-actions right>-->
-                <!--<v-btn fab small color="orange" >-->
-                <!--<v-icon>edit</v-icon></v-btn>-->
-                <!--<v-btn flat color="orange">Explore</v-btn>-->
-              <!--</v-card-actions>-->
             </v-card>
-            <hr>
           </v-flex>
         </v-layout>
-        <!--<div v-for="(item, index) in getallblog">-->
-          <!--<ul>-->
-            <!--<li :key="index">{{item}}</li>-->
-          <!--</ul>-->
-        <!--</div>-->
       </v-container>
       <v-form>
+
       <v-dialog v-model="dialog" max-width="500px">
         <v-stepper v-model="e1">
 
@@ -156,11 +146,10 @@ export default {
         this.description !== ''
     },
     getallblog () {
-      console.log(this.$store.getters.get_allBlog)
+      // console.log(this.$store.getters.get_allBlog)
       return this.$store.getters.get_allBlog
       // this.allblog = this.$store.getters.get_allBlog
     }
-
   },
   methods: {
     onPickFile () {

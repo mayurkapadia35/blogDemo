@@ -89,7 +89,7 @@ export const store = new Vuex.Store({
       let temparray = state.allBlog[state.allBlog.length - 1]
       let temp_id= parseInt(temparray.blog_id) + 1
 
-      state.allBlog.push({
+      state.allBlog.unshift({
         'blog_id' : temp_id,
         'blog_title' : payload.title,
         'blog_description' : payload.description,
