@@ -15,7 +15,7 @@
 
         <v-layout row wrap>
           <v-flex xs12 sm6 offset-sm3 v-for="item in getallblog" :key="item.blog_id">
-            <v-card raised>
+            <v-card raised hover>
               <v-card-media :src="/static/+item.blog_image" height="200px" >
               </v-card-media>
               <v-card-title primary-title>
@@ -146,9 +146,7 @@ export default {
         this.description !== ''
     },
     getallblog () {
-      // console.log(this.$store.getters.get_allBlog)
       return this.$store.getters.get_allBlog
-      // this.allblog = this.$store.getters.get_allBlog
     }
   },
   methods: {
@@ -174,7 +172,7 @@ export default {
         image: this.image,
         description: this.description
       }
-      console.log(addblog)
+      // console.log(addblog)
       this.$store.dispatch('insertBlog', addblog)
     }
 
@@ -183,9 +181,8 @@ export default {
     navigation
   },
   created () {
-    if (this.$store.getters.get_isallblog) {
+    if (this.$store.getters.get_isallblog == true) {
       this.$store.dispatch('getAllBlog')
-      this.$store.state.isallblog = false
     }
   }
 }

@@ -16,21 +16,33 @@
               </v-card-title>
               <v-card-actions>
                 <v-spacer></v-spacer>
-              <v-btn fab small color="orange">
+              <v-btn fab small color="orange" @click.native.stop="dialog1=!dialog1">
               <v-icon>edit</v-icon></v-btn>
-                <v-btn fab small color="orange" @click.native.stop="dialog=!dialog" ><v-icon>close</v-icon></v-btn>
-                <!--<v-btn fab small color="orange" slot="activator"><v-icon>close</v-icon></v-btn>-->
+                <v-btn fab small color="orange" @click.native.stop="dialog=!dialog" @click="setdeleteblog_id(item.blog_id)" ><v-icon>close</v-icon></v-btn>
               </v-card-actions>
             </v-card>
           </v-flex>
-          <v-dialog v-model="dialog" persistent max-width="290">
+
+          <v-dialog v-model="dialog1" persistent max-width="290">
             <v-card>
-              <v-card-title class="headline">Are you sure to delete this post?</v-card-title>
+              <v-card-title class="headline">Are you sure you want to delete this post?</v-card-title>
               <v-card-text>Click Yes for Delete else No for continue. </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="green" flat @click.native="dialog = false">No</v-btn>
-                <v-btn color="green" flat @click.native="dialog = false">Yes</v-btn>
+                <v-btn color="green" flat @click.native="dialog1 = false" >No</v-btn>
+                <v-btn color="green" flat @click.native="dialog1 = false" >Yes</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+
+          <v-dialog v-model="dialog" persistent max-width="290">
+            <v-card>
+              <v-card-title class="headline">Are you sure you want to delete this post?</v-card-title>
+              <v-card-text>Click Yes for Delete else No for continue. </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="green" flat @click.native="dialog = false" @click="unsetblogid">No</v-btn>
+                <v-btn color="green" flat @click.native="dialog = false" @click="deleteBlog({'blog_id': getdeleteblog_id})">Yes</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -42,20 +54,37 @@
 
 <script>
 import navigation from '../Front_end/navigation_header'
+import { mapActions } from 'vuex'
+
 export default {
   data: () => ({
-    dialog: false
+    dialog: false,
+    deleteblog_id: '',
+    dialog1: false
   }),
   components: {
     navigation
   },
   computed: {
     getallblog () {
-      console.log(this.$store.getters.get_allBlog)
       return this.$store.getters.get_allBlog
     },
     getuserid () {
       return this.$store.getters.get_userId
+    },
+    getdeleteblog_id () {
+      return this.deleteblog_id
+    }
+  },
+  methods: {
+    ...mapActions([
+      'deleteBlog'
+    ]),
+    setdeleteblog_id (id) {
+      this.deleteblog_id = id
+    },
+    unsetblogid () {
+      this.deleteblog_id = ''
     }
   }
 }

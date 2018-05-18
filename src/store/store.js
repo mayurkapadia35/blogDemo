@@ -48,7 +48,7 @@ export const store = new Vuex.Store({
       fd.append('interest', payload.interest)
 
       axios.post(state.url, fd)
-        .then(res => console.log(res))
+        .then()
         .catch(e => {
           console.log(e)
         })
@@ -85,7 +85,6 @@ export const store = new Vuex.Store({
       fd.append('image', payload.image)
       fd.append('description', payload.description)
       fd.append('userid', state.user_id)
-      console.log(payload)
       let temparray = state.allBlog[state.allBlog.length - 1]
       let temp_id= parseInt(temparray.blog_id) + 1
 
@@ -103,7 +102,7 @@ export const store = new Vuex.Store({
           'Authorization': state.user_token
         }
       })
-        .then(res => console.log(res))
+        .then()
         .catch(e => {
           console.log(e)
         })
@@ -111,24 +110,27 @@ export const store = new Vuex.Store({
     getAllBlog: (state) => {
       axios.get(state.url, {headers: {'Authorization': state.user_token}})
         .then((res) => {
-          // console.log(res)
-          // state.allBlog = state.allBlog.concat(res.data)
           state.allBlog = []
           state.allBlog = state.allBlog.concat(res.data)
-          // for(let key in res.data){
-          //
-          //   state.allBlog.push({
-          //     id: res.data[key].blog_id,
-          //     title: res.data[key].blog_title,
-          //     description: res.data[key].blog_description,
-          //     image: res.data[key].blog_image,
-          //     userid: res.data[key].user_id
-          //   })
-          // }
-          state.isallblog = true
-
-          // console.log(state.allBlog[0])
+          state.isallblog = false
         })
+        .catch(e => {
+          console.log(e)
+        })
+    },
+    deleteBlog: (state, payload) => {
+      let index = state.allBlog.findIndex(item => item.blog_id === payload.blog_id);
+      state.allBlog.splice(index, 1)
+
+      axios.delete(state.url, {
+        params: {
+            id: payload.blog_id
+        },
+        headers: {
+          'Authorization': state.user_token
+        }
+        })
+        .then()
         .catch(e => {
           console.log(e)
         })
@@ -149,7 +151,9 @@ export const store = new Vuex.Store({
     },
     getAllBlog: ({commit}) => {
       commit('getAllBlog')
+    },
+    deleteBlog: ({commit}, payload) => {
+      commit('deleteBlog', payload)
     }
   }
-
 })
