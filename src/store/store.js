@@ -85,18 +85,17 @@ export const store = new Vuex.Store({
       fd.append('image', payload.image)
       fd.append('description', payload.description)
       fd.append('userid', state.user_id)
-      let temparray = state.allBlog[state.allBlog.length - 1]
-      let temp_id= parseInt(temparray.blog_id) + 1
+
+      let tempindex= parseInt(state.allBlog[0].blog_id) + 1
 
       state.allBlog.unshift({
-        'blog_id' : temp_id,
-        'blog_title' : payload.title,
-        'blog_description' : payload.description,
-        'blog_image' : payload.image.name,
-        'user_id' : state.user_id,
-        'flag' : true
+        'blog_id': tempindex,
+        'blog_title': payload.title,
+        'blog_description': payload.description,
+        'blog_image': payload.image.name,
+        'user_id': state.user_id,
+        'flag': true
       })
-
       axios.post(state.url, fd, {
         headers: {
           'Authorization': state.user_token
@@ -134,6 +133,36 @@ export const store = new Vuex.Store({
         .catch(e => {
           console.log(e)
         })
+    },
+    updateBlog: (state, payload) => {
+
+      let fd = new FormData()
+      fd.append('blog_id', payload.blog_id)
+      fd.append('title', payload.blog_title)
+      fd.append('image', payload.blog_image)
+      fd.append('description', payload.blog_description)
+      fd.append('userid', state.user_id)
+
+      const editblog = {
+        'blog_id': payload.blog_id,
+        'blog_title': payload.blog_title,
+        'blog_description': payload.blog_description,
+        'blog_image': payload.blog_image.name,
+        'user_id': state.user_id,
+        'flag': true
+      }
+      let index = state.allBlog.findIndex(item => item.blog_id === payload.blog_id);
+      state.allBlog.splice(index, 1, editblog)
+
+      axios.post(state.url, fd, {
+        headers: {
+          'Authorization': state.user_token
+        }
+      })
+      .then()
+      .catch(e => {
+        console.log(e)
+      })
     }
   },
   actions: {
@@ -154,6 +183,9 @@ export const store = new Vuex.Store({
     },
     deleteBlog: ({commit}, payload) => {
       commit('deleteBlog', payload)
+    },
+    updateBlog: ({commit}, payload) => {
+      commit('updateBlog', payload)
     }
   }
 })

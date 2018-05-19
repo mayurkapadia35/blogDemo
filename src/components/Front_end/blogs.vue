@@ -172,7 +172,7 @@ export default {
         image: this.image,
         description: this.description
       }
-      // console.log(addblog)
+      // console.log(addblog.image)
       this.$store.dispatch('insertBlog', addblog)
     }
 

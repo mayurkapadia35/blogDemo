@@ -28,7 +28,6 @@ new Vue({
       let id = JSON.parse(base64url.decode(userid[1]))
       this.$store.state.user_id = id.user_id
       this.$store.dispatch('getAllBlog')
-      console.log(this.$store.state.user_id)
     }
   },
   components: { App },

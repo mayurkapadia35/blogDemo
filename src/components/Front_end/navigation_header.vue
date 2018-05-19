@@ -149,8 +149,8 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="black" flat="flat" @click.native="logindialog = false">Close</v-btn>
-          <v-btn color="black" flat="flat" @click.native="logindialog = false" @click='loginProcess({"email": loginDetails.useremail,"password": loginDetails.userpassword})'>Log In</v-btn>
+          <v-btn dark @click.native="logindialog = false"><v-icon dark left>remove_circle</v-icon>Cancel</v-btn>
+          <v-btn color="info" @click.native="logindialog = false" @click='loginProcess({"email": loginDetails.useremail,"password": loginDetails.userpassword})'><v-icon dark left>subdirectory_arrow_right</v-icon>Login</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>           <!--Login Code-->
