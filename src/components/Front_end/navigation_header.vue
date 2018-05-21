@@ -195,7 +195,7 @@ export default {
     snackbar: false,
     y: 'bottom',
     x: null,
-    mode: 'vertical',
+    mode: 'multi-line',
     timeout: 3000,
     text: 'Registration Successfully'
   }),

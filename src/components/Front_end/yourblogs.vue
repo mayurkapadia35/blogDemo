@@ -171,7 +171,7 @@ export default {
       this.blog_id = item.blog_id
       this.blog_title = item.blog_title
       this.blog_description = item.blog_description
-      this.blog_image = 'static/'+item.blog_image
+      this.blog_image = 'static/' + item.blog_image
     },
     updateBlog () {
       let editblog = {

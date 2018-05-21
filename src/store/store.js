@@ -2,13 +2,13 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 import base64url from 'base64url'
-
+// import {routes} from '../router/index'
 Vue.use(Vuex)
 
 export const store = new Vuex.Store({
   state: {
     count: 0,
-    url: 'http://localhost:9090/vuecliapi/insert.php',
+    url: 'http://192.168.200.151:9090/vuecliapi/insert.php',
     isLogin: false,
     user_id: '',
     user_token: '',
@@ -57,7 +57,7 @@ export const store = new Vuex.Store({
       var fd = new FormData()
       fd.append('email', payload.email)
       fd.append('password', payload.password)
-      axios.post('http://localhost:9090/vuecliapi/insert.php?type=login', fd)
+      axios.post('http://192.168.200.151:9090/vuecliapi/insert.php?type=login', fd)
         .then((res) => {
           if (!localStorage.getItem('jwttoken')) {
             localStorage.setItem('jwttoken', res.data[0].jwt)
@@ -77,7 +77,7 @@ export const store = new Vuex.Store({
     logoutProcess: (state) => {
       localStorage.removeItem('jwttoken')
       state.isLogin = false
-      this.$router.push('/')
+      this.$router.push({path: '/'})
     },
     insertBlog: (state, payload) => {
       let fd = new FormData()
@@ -86,7 +86,7 @@ export const store = new Vuex.Store({
       fd.append('description', payload.description)
       fd.append('userid', state.user_id)
 
-      let tempindex= parseInt(state.allBlog[0].blog_id) + 1
+      let tempindex = parseInt(state.allBlog[0].blog_id) + 1
 
       state.allBlog.unshift({
         'blog_id': tempindex,
@@ -118,24 +118,23 @@ export const store = new Vuex.Store({
         })
     },
     deleteBlog: (state, payload) => {
-      let index = state.allBlog.findIndex(item => item.blog_id === payload.blog_id);
+      let index = state.allBlog.findIndex(item => item.blog_id === payload.blog_id)
       state.allBlog.splice(index, 1)
 
       axios.delete(state.url, {
         params: {
-            id: payload.blog_id
+          id: payload.blog_id
         },
         headers: {
           'Authorization': state.user_token
         }
-        })
+      })
         .then()
         .catch(e => {
           console.log(e)
         })
     },
     updateBlog: (state, payload) => {
-
       let fd = new FormData()
       fd.append('blog_id', payload.blog_id)
       fd.append('title', payload.blog_title)
@@ -151,7 +150,8 @@ export const store = new Vuex.Store({
         'user_id': state.user_id,
         'flag': true
       }
-      let index = state.allBlog.findIndex(item => item.blog_id === payload.blog_id);
+
+      let index = state.allBlog.findIndex(item => item.blog_id === payload.blog_id)
       state.allBlog.splice(index, 1, editblog)
 
       axios.post(state.url, fd, {
@@ -159,10 +159,10 @@ export const store = new Vuex.Store({
           'Authorization': state.user_token
         }
       })
-      .then()
-      .catch(e => {
-        console.log(e)
-      })
+        .then()
+        .catch(e => {
+          console.log(e)
+        })
     }
   },
   actions: {
