@@ -16,7 +16,7 @@
         <v-layout row wrap>
           <v-flex xs12 sm6 offset-sm3 v-for="item in getallblog" :key="item.blog_id">
             <v-card raised hover>
-              <v-card-media :src="/static/+item.blog_image" height="200px" >
+              <v-card-media :src="'http://192.168.200.151:8080/static/'+item.blog_image" height="200px" >
               </v-card-media>
               <v-card-title primary-title>
                 <div>
@@ -174,8 +174,10 @@ export default {
       }
       // console.log(addblog.image)
       this.$store.dispatch('insertBlog', addblog)
+      this.image = ''
+      this.title = ''
+      this.description = ''
     }
-
   },
   components: {
     navigation

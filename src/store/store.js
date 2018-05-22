@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 import base64url from 'base64url'
-// import {routes} from '../router/index'
+import router from '../router/index'
 Vue.use(Vuex)
 
 export const store = new Vuex.Store({
@@ -96,6 +96,7 @@ export const store = new Vuex.Store({
         'user_id': state.user_id,
         'flag': true
       })
+      console.log(state.allBlog)
       axios.post(state.url, fd, {
         headers: {
           'Authorization': state.user_token

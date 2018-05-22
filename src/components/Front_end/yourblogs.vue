@@ -6,7 +6,7 @@
         <v-layout row wrap>
           <v-flex xs12 sm6 offset-sm3 v-for="item in getallblog" :key="item.blog_id" v-if="item.user_id == getuserid">
             <v-card raised hover>
-              <v-card-media :src="/static/+item.blog_image" height="200px">
+              <v-card-media :src="'http://192.168.200.151:8080/static/'+item.blog_image" height="200px">
               </v-card-media>
               <v-card-title primary-title>
                 <div>
@@ -156,6 +156,7 @@ export default {
     },
     onFilePicked (event) {
       const files = event.target.files
+      console.log(files)
       let filename = files[0].name
       if (filename.lastIndexOf('.') <= 0) {
         return alert('please add a valid file')
