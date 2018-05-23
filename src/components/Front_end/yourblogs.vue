@@ -106,6 +106,7 @@
           </v-dialog>
         </v-layout>
       </v-container>
+      <blogfooter />
     </v-app>
   </div>
 </template>
@@ -113,7 +114,7 @@
 <script>
 import navigation from '../Front_end/navigation_header'
 import { mapActions } from 'vuex'
-
+import blogfooter from '../blogfooter'
 export default {
   data: () => ({
     dialog: false,
@@ -128,7 +129,8 @@ export default {
     image: null
   }),
   components: {
-    navigation
+    navigation,
+    blogfooter
   },
   computed: {
     getallblog () {

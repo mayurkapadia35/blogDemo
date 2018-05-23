@@ -14,14 +14,14 @@
             >
               <h1 class="black--text mb-2 display-1 text-xs-center">Blog Mania</h1>
               <div class="subheading black--text mb-3 text-xs-center">Powered By MA Company..</div>
-              <v-btn
-                class="blue lighten-2 mt-5"
-                dark
-                large
-                href="/pre-made-themes"
-              >
-                Get Started
-              </v-btn>
+              <!--<v-btn-->
+                <!--class="blue lighten-2 mt-5"-->
+                <!--dark-->
+                <!--large-->
+                <!--href="/pre-made-themes"-->
+              <!--&gt;-->
+                <!--Get Started-->
+              <!--</v-btn>-->
             </v-layout>
           </v-parallax>
         </section>
@@ -128,7 +128,7 @@
                     <div class="headline">Contact us</div>
                   </v-card-title>
                   <v-card-text>
-                    Cras facilisis mi vitae nunc lobortis pharetra. Nulla volutpat tincidunt ornare.
+                    This is our contact information for helping anyone.
                   </v-card-text>
                   <v-list class="transparent">
                     <v-list-tile>
@@ -162,31 +162,20 @@
           </v-container>
         </section>
 
-        <v-footer class="blue darken-2">
-          <v-layout row wrap align-center>
-            <v-flex xs12>
-              <div class="white--text ml-3">
-                &copy;2018
-                Made with
-                <v-icon class="red--text">favorite</v-icon>
-                by <a class="white--text" href="javascript:;" target="_blank">Mayur Kapadia</a>
-                and <a class="white--text" href="javascript:;">Ankita Kuchhadia </a>
-              </div>
-            </v-flex>
-          </v-layout>
-        </v-footer>
-      </v-content>
+        <blogfooter />
 
+      </v-content>
     </v-app>
   </div>
 </template>
 
 <script>
 import navigation from './navigation_header.vue'
-
+import blogfooter from '../blogfooter'
 export default {
   components: {
-    navigation
+    navigation,
+    blogfooter
   }
 }
 </script>

@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 import base64url from 'base64url'
-import router from '../router/index'
+// import router from '../router/index'
 Vue.use(Vuex)
 
 export const store = new Vuex.Store({
@@ -48,7 +48,19 @@ export const store = new Vuex.Store({
       fd.append('interest', payload.interest)
 
       axios.post(state.url, fd)
-        .then()
+        .then((res)=> {
+          if (!localStorage.getItem('jwttoken')) {
+            localStorage.setItem('jwttoken', res.data)
+            let userid = res.data.split('.')
+            let id = JSON.parse(base64url.decode(userid[1]))
+            setTimeout(() => {
+              state.user_id = id.user_id
+              state.isLogin = true
+              state.user_token = res.data
+              state.isallblog = true
+            },2000)
+          }
+        })
         .catch(e => {
           console.log(e)
         })
@@ -59,6 +71,7 @@ export const store = new Vuex.Store({
       fd.append('password', payload.password)
       axios.post('http://192.168.200.151:9090/vuecliapi/insert.php?type=login', fd)
         .then((res) => {
+          //console.log(res)
           if (!localStorage.getItem('jwttoken')) {
             localStorage.setItem('jwttoken', res.data[0].jwt)
             let userid = res.data[0].jwt.split('.')
@@ -96,7 +109,7 @@ export const store = new Vuex.Store({
         'user_id': state.user_id,
         'flag': true
       })
-      console.log(state.allBlog)
+      // console.log(state.allBlog)
       axios.post(state.url, fd, {
         headers: {
           'Authorization': state.user_token

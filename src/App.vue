@@ -6,9 +6,11 @@
 
 <script>
 import navigation from './components/Front_end/navigation_header'
+import blogfooter from './components/blogfooter'
 export default {
   components: {
-    navigation
+    navigation,
+    blogfooter
   }
 }
 </script>

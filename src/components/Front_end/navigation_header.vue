@@ -5,7 +5,7 @@
       Home
     </v-btn>
     <v-btn flat color="black" slot="activator" :to="{name : 'aboutus'}">
-      <v-icon>account-multiple</v-icon>
+      <v-icon>comment</v-icon>
       About Us
     </v-btn>
     <v-btn flat color="black" slot="activator" :to="{name : 'contactus'}">

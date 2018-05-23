@@ -2,6 +2,7 @@
   <div>
     <v-app>
       <navigation/>
+
       <v-container fluid grid-list-lg>
         <v-layout row wrap>
           <v-flex xs12>
@@ -28,6 +29,7 @@
           </v-flex>
         </v-layout>
       </v-container>
+      <blogfooter />
       <v-form>
 
       <v-dialog v-model="dialog" max-width="500px">
@@ -120,7 +122,7 @@
 
 <script>
 import navigation from '../Front_end/navigation_header'
-
+import blogfooter from '../blogfooter'
 export default {
   data () {
     return {
@@ -180,7 +182,8 @@ export default {
     }
   },
   components: {
-    navigation
+    navigation,
+    blogfooter
   },
   created () {
     if (this.$store.getters.get_isallblog == true) {
