@@ -94,7 +94,7 @@
             <v-icon dark left>remove_circle</v-icon>Cancel
           </v-btn>
 
-          <v-btn @click.native="snackbar = false, loader = 'loading4'" @click='registerUser({"first_name": user.firstname,"last_name": user.lastname,"email": user.useremail, "password": user.userpassword, "interest": user.interest})'
+          <v-btn @click.native="snackbar = false, loader = 'loading4'" @click='registeruser'
           :loading="loading4" :disabled="loading4" color="info">Register
 
             <span slot="loader" class="custom-loader">
@@ -201,7 +201,7 @@ export default {
   }),
   methods: {
     ...mapActions([
-      'registerUser',
+      // 'registerUser',
       'loginProcess',
       'logoutProcess'
     ]),
@@ -211,7 +211,17 @@ export default {
       this.user.useremail = ''
       this.user.userpassword = ''
       this.user.interest = []
-    }
+    },
+    registeruser () {
+      const userdata = {
+        first_name: this.user.firstname,
+        last_name: this.user.lastname,
+        email: this.user.useremail,
+        password: this.user.userpassword,
+        interest: this.user.interest
+      }
+        this.$store.dispatch('registerUser', userdata)
+      }
   },
   computed: {
     isLogin () {
@@ -220,10 +230,11 @@ export default {
   },
   watch: {
     loader () {
+
       const l = this.loader
       this[l] = !this[l]
-      setTimeout(() => (this[l] = false, this.dialog = false, this.snackbar = true), 2000)
-      this.loader = null
+        setTimeout(() => (this[l] = false, this.dialog = false, this.snackbar = true), 2000)
+        this.loader = null
     }
   }
 }

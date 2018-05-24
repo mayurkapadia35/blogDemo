@@ -174,7 +174,7 @@ export default {
         image: this.image,
         description: this.description
       }
-      // console.log(addblog.image)
+
       this.$store.dispatch('insertBlog', addblog)
       this.image = ''
       this.title = ''
@@ -186,7 +186,7 @@ export default {
     blogfooter
   },
   created () {
-    if (this.$store.getters.get_isallblog == true) {
+    if (this.$store.getters.get_isallblog === true) {
       this.$store.dispatch('getAllBlog')
     }
   }

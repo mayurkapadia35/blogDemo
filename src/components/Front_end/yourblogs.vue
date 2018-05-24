@@ -134,6 +134,7 @@ export default {
   },
   computed: {
     getallblog () {
+      // console.log(this.$store.getters.get_allBlog)
       return this.$store.getters.get_allBlog
     },
     getuserid () {

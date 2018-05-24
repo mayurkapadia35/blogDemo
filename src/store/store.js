@@ -48,7 +48,7 @@ export const store = new Vuex.Store({
       fd.append('interest', payload.interest)
 
       axios.post(state.url, fd)
-        .then((res)=> {
+        .then((res) => {
           if (!localStorage.getItem('jwttoken')) {
             localStorage.setItem('jwttoken', res.data)
             let userid = res.data.split('.')
@@ -58,7 +58,7 @@ export const store = new Vuex.Store({
               state.isLogin = true
               state.user_token = res.data
               state.isallblog = true
-            },2000)
+            }, 2000)
           }
         })
         .catch(e => {
@@ -71,7 +71,6 @@ export const store = new Vuex.Store({
       fd.append('password', payload.password)
       axios.post('http://192.168.200.151:9090/vuecliapi/insert.php?type=login', fd)
         .then((res) => {
-          //console.log(res)
           if (!localStorage.getItem('jwttoken')) {
             localStorage.setItem('jwttoken', res.data[0].jwt)
             let userid = res.data[0].jwt.split('.')
@@ -190,7 +189,7 @@ export const store = new Vuex.Store({
       commit('logoutProcess')
     },
     insertBlog: ({commit}, payload) => {
-      commit('insertBlog', payload)
+        commit('insertBlog', payload)
     },
     getAllBlog: ({commit}) => {
       commit('getAllBlog')

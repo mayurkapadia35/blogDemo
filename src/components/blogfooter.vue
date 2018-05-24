@@ -6,8 +6,8 @@
           &copy;{{ new Date().getFullYear() }}
           Made with
           <v-icon class="red--text">favorite</v-icon>
-          by <a class="white--text" href="javascript:;" target="_blank">Mayur Kapadia</a>
-          and <a class="white--text" href="javascript:;">Ankita Kuchhadiya </a>
+          by <a class="white--text" href="javascript:;" style="text-decoration: none;font-weight: bolder" target="_blank">Mayur Kapadia</a>
+          and <a class="white--text" href="javascript:;" style="text-decoration: none;font-weight: bolder">Ankita Kuchhadiya </a>
         </div>
       </v-flex>
     </v-layout>
